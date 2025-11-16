@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blockchain Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .input-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        .block {
+            background: white;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .block-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .block-data {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .chain-connector {
+            text-align: center;
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Blockchain Simulator</h1>
+    
+    <div class="input-area">
+        <textarea id="blockData" rows="3" placeholder="Enter block data..."></textarea>
+        <button onclick="addBlock()">Add Block</button>
+    </div>
+    
+    <div id="blocksContainer"></div>
+
+    <script>
+        function createBlock(data, previousHash) {
+            const timestamp = new Date().toISOString();
+            
+            function createHash() {
+                const blockString = data + previousHash + timestamp;
+                let hash = 0;
+                for (let i = 0; i < blockString.length; i++) {
+                    const char = blockString.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                }
+                return Math.abs(hash).toString(16);
+            }
+            
+            const hash = createHash();
+            
+            return {
+                data: data,
+                previousHash: previousHash,
+                timestamp: timestamp,
+                hash: hash
+            };
+        }
+
+        function createBlockchain() {
+            const genesisBlock = createBlock("New Block", "0");
+            const chain = [genesisBlock];
+            
+            return {
+                chain: chain,
+                
+                getLatestBlock: function() {
+                    return this.chain[this.chain.length - 1];
+                },
+                
+                addBlock: function(data) {
+                    const previousBlock = this.getLatestBlock();
+                    const newBlock = createBlock(data, previousBlock.hash);
+                    this.chain.push(newBlock);
+                    return newBlock;
+                }
+            };
+        }
+
+        let myBlockchain = createBlockchain();
+
+        function showBlocks() {
+            const container = document.getElementById('blocksContainer');
+            
+            container.innerHTML = '';
+            
+            myBlockchain.chain.forEach((block, index) => {
+                const blockElement = document.createElement('div');
+                blockElement.className = 'block';
+                blockElement.innerHTML = `
+                    <div class="block-header">Block #${index}</div>
+                    <div class="block-data">
+                        <strong>Time:</strong> ${new Date(block.timestamp).toLocaleString()}<br>
+                        <strong>Previous Hash:</strong> ${block.previousHash}<br>
+                        <strong>Hash:</strong> ${block.hash}<br>
+                        <strong>Data:</strong> ${block.data}
+                    </div>
+                `;
+                container.appendChild(blockElement);
+                
+                if (index < myBlockchain.chain.length - 1) {
+                    const connector = document.createElement('div');
+                    connector.className = 'chain-connector';
+                    connector.innerHTML = '↓';
+                    container.appendChild(connector);
+                }
+            });
+        }
+
+        function addBlock() {
+            const dataInput = document.getElementById('blockData');
+            const data = dataInput.value.trim();
+            
+            if (!data) {
+                alert('Please enter some data for the block.');
+                return;
+            }
+
+            myBlockchain.addBlock(data);
+            
+            showBlocks();
+            
+            dataInput.value = '';
+        }
+
+        showBlocks();
+    </script>
+</body>
+</html>
