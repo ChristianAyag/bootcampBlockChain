@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "helperTrigger",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/InternalFunction.sol": "InternalFunction"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/InternalFunction.sol": {
+			"keccak256": "0x7e8461f9fa094c822ffa0c19b1f0885b4b7c882a007f209aebfad1b967e2ed78",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://18760719c8b7c0393b70a7fee7752ba80fdb3958ad462eaf82a022d2010da6fb",
+				"dweb:/ipfs/QmVMzVb85WLGSCUxdqSX6Nugmg2PRPvLvpfdJa95k3KMGz"
+			]
+		}
+	},
+	"version": 1
+}

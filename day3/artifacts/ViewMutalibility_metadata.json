@@ -1,0 +1,72 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "readFirstNum",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "readFirstNumTwo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/ViewMutability.sol": "ViewMutalibility"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ViewMutability.sol": {
+			"keccak256": "0xe5193cba86b4584457da6dede9668a08caa2bb9e14cdbe2411ce13060ee8d95f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://be9d137c39d379eedc1ae14f05e219be28f1e9a2d24e4985a08472fa84287c92",
+				"dweb:/ipfs/QmXjeCcU9TAB4JYhxLjG9P7YMVEAXE9jWrhRVcRUZVUXqk"
+			]
+		}
+	},
+	"version": 1
+}
