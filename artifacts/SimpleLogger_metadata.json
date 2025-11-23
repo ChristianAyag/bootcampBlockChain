@@ -1,0 +1,78 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "action",
+						"type": "string"
+					}
+				],
+				"name": "ActionPerformed",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_action",
+						"type": "string"
+					}
+				],
+				"name": "logAction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Day7.sol": "SimpleLogger"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Day7.sol": {
+			"keccak256": "0xf0229d37b1bb3cee801a11c40166b953135d595aab33e8c5193ae631bdbe4db5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b5d237d7f6e2bbf17c5ce77fa9c97e61e6e04cb3477ced2c6845858b7dac7516",
+				"dweb:/ipfs/QmZs5dSdh4mD48vLsrNkfsAsY3b1g974oZbvHzLBShK7sF"
+			]
+		}
+	},
+	"version": 1
+}
