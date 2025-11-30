@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profile Upload</title>
+</head>
+<body>
+    <h2>Upload Employee Profile</h2>
+
+    <form id="employeeForm">
+        <!-- 2x2 Picture -->
+        <div>
+            <label for="picture">2x2 Picture:</label>
+            <input type="file" id="picture" accept="image/*" required>
+        </div>
+
+        <!-- Personal Information -->
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" required>
+        </div>
+
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" required>
+        </div>
+
+        <div>
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName">
+        </div>
+
+        <div>
+            <label for="position">Position:</label>
+            <input type="text" id="position" required>
+        </div>
+
+        <!-- Resume/CV -->
+        <div>
+            <label for="resume">Resume/CV:</label>
+            <input type="file" id="resume" accept=".pdf,.doc,.docx" required>
+        </div>
+
+        <button type="button" onclick="uploadEmployeeProfile()">Upload Profile</button>
+    </form>
+
+    <p id="status"></p>
+
+    <script type="application/javascript">
+        const PINATA_JWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiYjY2OGU2ZC1jNjEyLTQ1OWMtYTZmNS1lMmY4ZjEyMzI2NWEiLCJlbWFpbCI6ImNocmlzdGlhbmVtbWFudWVsMTIwM0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MSwiaWQiOiJGUkExIn0seyJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MSwiaWQiOiJOWUMxIn1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiNDE3OGVkNTdhYTk3MjM3OTU1YjQiLCJzY29wZWRLZXlTZWNyZXQiOiI4ZjdhYmRiMzhhNzFlMzFlMzc2MTc1NWQwZDdiMTE3ZDg5NDBhOTdkNDg5MjNkODZiZWFlYzNlY2QzOGY5YTE1IiwiZXhwIjoxNzk1Njk3NDk0fQ.a5btEJpSf-QJZDh0Kz-IT7O-8mTYiBwL_SCbtnnW0c0"
+        
+        async function uploadEmployeeProfile() {
+            const pictureInput = document.getElementById("picture");
+            const resumeInput = document.getElementById("resume");
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const middleName = document.getElementById("middleName").value;
+            const position = document.getElementById("position").value;
+
+            if (!pictureInput.files.length || !resumeInput.files.length || !firstName || !lastName || !position) {
+                alert("Please fill all required fields");
+                return;
+            }
+
+            const pictureFile = pictureInput.files[0];
+            const resumeFile = resumeInput.files[0];
+
+            try {
+                document.getElementById("status").innerText = "Uploading files to IPFS...";
+
+                let pictureData = new FormData();
+                pictureData.append("file", pictureFile);
+
+                let pictureRes = await fetch(
+                    "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    {
+                        method: "POST",
+                        body: pictureData,
+                        headers: {
+                            Authorization: PINATA_JWT,
+                        },
+                    }
+                );
+
+                let pictureResult = await pictureRes.json();
+                const pictureCID = `https://ipfs.io/ipfs/${pictureResult.IpfsHash}`;
+
+                let resumeData = new FormData();
+                resumeData.append("file", resumeFile);
+
+                let resumeRes = await fetch(
+                    "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    {
+                        method: "POST",
+                        body: resumeData,
+                        headers: {
+                            Authorization: PINATA_JWT,
+                        },
+                    }
+                );
+
+                let resumeResult = await resumeRes.json();
+                const resumeCID = `https://ipfs.io/ipfs/${resumeResult.IpfsHash}`;
+
+                const metadata = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    middleName: middleName,
+                    position: position,
+                    picture: pictureCID,
+                    resume: resumeCID,
+                    timestamp: new Date().toISOString()
+                };
+
+                let metadataRes = await fetch(
+                    "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(metadata),
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: PINATA_JWT,
+                        },
+                    }
+                );
+
+                let metadataResult = await metadataRes.json();
+                const metadataURL = `https://ipfs.io/ipfs/${metadataResult.IpfsHash}`;
+
+                document.getElementById("status").innerText = 
+                    `Profile uploaded successfully!\nMetadata URL: ${metadataURL}\nPicture URL: ${pictureCID}\nResume URL: ${resumeCID}`;
+
+                document.getElementById("employeeForm").reset();
+
+            } catch (error) {
+                document.getElementById("status").innerText = "Error uploading files: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
